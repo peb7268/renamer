@@ -1,7 +1,11 @@
+#!/usr/bin/env python
+#chmod +x renamer.py
+
 '''
 #NOTES ************************************************
-type(): is python's equivilent to typeof
+
 pdb: python debugger
+type(): is python's equivilent to typeof
 s(tep)
 Execute the current line, stop at the first possible occasion (either in a function that is called or on the next line in the current function).
 
@@ -47,7 +51,7 @@ Quit from the debugger. The program being executed is aborted.
 - just copy them into the folder
 '''
 
-import os
+import os, sys, getopt
 
 import pprint
 import pdb
@@ -55,7 +59,23 @@ import pdb
 #Configure printer
 pp = pprint.PrettyPrinter(indent=4)
 
-basePath    = os.getcwd() + '/test'
+basePath = ""
+argv     = sys.argv[1:]
+
+try:
+    print("grabbing args from cli")
+    opts, args = getopt.getopt(argv,"p:",["path="])
+except getopt.GetoptError:
+      print('cli err renamer.py -p </path/to/files>')
+      sys.exit(2)
+for opt, arg in opts:
+    if opt == '-h':
+        print('renamer.py -p </path/to/files>')
+        sys.exit()
+    elif opt in ("-p", "--path"):
+        basePath = arg
+
+pdb.set_trace()
 
 def insertFileIntoDir(basePath, fileName):
     print("fomratting fileName " + fileName)
@@ -68,21 +88,23 @@ def insertFileIntoDir(basePath, fileName):
     create the directory
     then move the file into the directory and remove the underscore
     '''
-
+    
     if not os.path.exists(dirname):
         #Make dirname according to rules
         os.mkdir(dirname)
         here    = basePath + "/" + fileName
-        there   = basePath + "/" + dirname
+        there   = dirname + "/" + filename
         os.rename(here, there)
         pp.pprint("moving file from " + here + " to  " + there)
     else:
+        print("dir " + filename + " already exists, aliasing dirname")
+        pdb.set_trace()
+
         fileAlias = basePath + "/_" + filename
         os.rename(basePath + "/" + filename, fileAlias)
         os.mkdir(dirname)
         os.rename(fileAlias, dirname + "/" + filename)
     
-
 def sanitizeFileName(filename):
     _filename   = filename
     _filename   = _filename.replace("[", "")
