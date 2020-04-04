@@ -75,8 +75,6 @@ for opt, arg in opts:
     elif opt in ("-p", "--path"):
         basePath = arg
 
-pdb.set_trace()
-
 def insertFileIntoDir(basePath, fileName):
     print("fomratting fileName " + fileName)
     filename    = sanitizeFileName(fileName)
@@ -119,8 +117,18 @@ def resolveDirnameFromFile(basePath, filename):
     _dirname   = _dirname.replace(".mkv", "")
     return basePath + "/" + _dirname
 
+def formatDirectory(dirName):
+    print("formatting directory")
+    formatDirectoryName(dirName)
+    formatDirectoryContents(dirName)
+
+def formatDirectoryContents(dirName):
+    print("fomratting dirName " + dirName)
+    pdb.set_trace()
+    
 def formatDirectoryName(dirName):
     print("fomratting dirName " + dirName)
+
 
 entries     = os.listdir(basePath)
 for entry in entries:
@@ -129,4 +137,4 @@ for entry in entries:
     if os.path.isfile(os.path.join(basePath, entry)):
         insertFileIntoDir(basePath, entry)
     elif os.path.isdir(os.path.join(basePath, entry)):
-        formatDirectoryName(entry)
+        formatDirectory(entry)
