@@ -124,8 +124,12 @@ def formatDirectory(dirName):
 
 def formatDirectoryContents(dirName):
     print("fomratting dirName " + dirName)
-    pdb.set_trace()
-    
+    dirListings = os.listdir(basePath + "/" + dirName)
+    for fileName in dirListings:
+        _filename = sanitizeFileName(fileName)
+        if fileName != _filename:
+            os.rename(basePath + "/" + fileName, basePath + "/" + _filename)
+
 def formatDirectoryName(dirName):
     print("fomratting dirName " + dirName)
 
